@@ -56,7 +56,11 @@ export function Home() {
         {deals.map((p) => (
           <div className="deal-card" key={p.id} onClick={() => navigate(`/product/${p.id}`)}>
             <div className="pct">-{Math.round((1 - p.price / p.old_price) * 100)}%</div>
-            <div className="icon">{p.icon}</div>
+            <div className="icon">
+              {p.image_url
+                ? <img src={p.image_url} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                : p.icon}
+            </div>
             <div className="name">{p.name}</div>
             <div className="price-row"><span className="old">{money(p.old_price)}</span>{money(p.price)}</div>
           </div>

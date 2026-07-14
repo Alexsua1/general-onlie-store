@@ -9,7 +9,7 @@ function stockBadge(n) {
   return <span className="stock-badge stock-ok">{n} in stock</span>;
 }
 
-const EMPTY_FORM = { name: '', category_id: '', price: '', stock: '', icon: '🛍️', description: '' };
+const EMPTY_FORM = { name: '', category_id: '', price: '', stock: '', icon: '🛍️', image_url: '', description: '' };
 
 export function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -28,7 +28,7 @@ export function AdminProducts() {
   const openAdd = () => { setEditingId(null); setForm(EMPTY_FORM); setModalOpen(true); };
   const openEdit = (p) => {
     setEditingId(p.id);
-    setForm({ name: p.name, category_id: p.category_id, price: p.price, stock: p.stock, icon: p.icon, description: p.description });
+setForm({ name: p.name, category_id: p.category_id, price: p.price, stock: p.stock, icon: p.icon, image_url: p.image_url || '', description: p.description });;
     setModalOpen(true);
   };
 
@@ -37,7 +37,7 @@ export function AdminProducts() {
     const payload = {
       name: form.name, category_id: form.category_id || categories[0]?.id,
       price: parseFloat(form.price) || 0, stock: parseInt(form.stock) || 0,
-      icon: form.icon || '🛍️', description: form.description, old_price: null, is_deal: false,
+     icon: form.icon || '🛍️', image_url: form.image_url || null, description: form.description, old_price: null, is_deal: false,
     };
     if (editingId) {
       await api.updateProduct(editingId, payload);
@@ -69,7 +69,7 @@ export function AdminProducts() {
           <tbody>
             {products.map((p) => (
               <tr key={p.id}>
-                <td><div className="pcell"><div className="th">{p.icon}</div>{p.name}</div></td>
+                <td><div className="pcell"><div className="th">{p.image_url ? <img src={p.image_url} alt={p.name} style={{width:32,height:32,objectFit:'cover',borderRadius:6}} /> : p.icon}</div>{p.name}</div></td>
                 <td>{p.category_name}</td>
                 <td style={{ fontFamily: 'var(--font-mono)' }}>{money(p.price)}</td>
                 <td>{stockBadge(p.stock)}</td>
@@ -101,7 +101,10 @@ export function AdminProducts() {
         <div className="field"><label>Stock Quantity</label>
           <input type="number" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })} />
         </div>
-        <div className="field"><label>Icon (emoji)</label>
+        <div className="field"><label>Image URL</label>
+          <input value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="https://example.com/photo.jpg" />
+        </div>
+        <div className="field"><label>Icon (emoji fallback)</label>
           <input value={form.icon} onChange={(e) => setForm({ ...form, icon: e.target.value })} />
         </div>
         <div className="field"><label>Description</label>

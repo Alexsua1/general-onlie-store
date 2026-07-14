@@ -49,6 +49,7 @@ class ProductBase(BaseModel):
     name: str
     category_id: str
     icon: str = "ITEM"
+    image_url: Optional[str] = None
     price: float
     old_price: Optional[float] = None
     stock: int = 0
@@ -78,6 +79,7 @@ class ProductOut(BaseModel):
     category_id: str
     category_name: Optional[str] = None
     icon: str
+    image_url: Optional[str] = None
     price: float
     old_price: Optional[float]
     stock: int

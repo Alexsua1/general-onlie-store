@@ -28,8 +28,11 @@ export function ProductDetail() {
   return (
     <>
       <PageHead title="Product Details" onBack={() => navigate(-1)} />
-      <div className="pd-hero">{product.icon}</div>
-      <div className="pd-body">
+<div className="pd-hero">
+        {product.image_url
+          ? <img src={product.image_url} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          : product.icon}
+      </div>      <div className="pd-body">
         <div className="pd-cat">{catName}</div>
         <div className="pd-name">{product.name}</div>
         <div className="pd-rating">⭐ {product.rating} · {product.reviews_count} reviews · {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}</div>
@@ -92,8 +95,11 @@ export function Cart() {
       <PageHead title={`Cart (${count})`} />
       {items.map((line) => (
         <div className="cart-item" key={line.product_id}>
-          <div className="thumb">{line.product.icon}</div>
-          <div className="info">
+<div className="thumb">
+            {line.product.image_url
+              ? <img src={line.product.image_url} alt={line.product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              : line.product.icon}
+          </div>          <div className="info">
             <div className="name">{line.product.name}</div>
             <div className="cat">{line.product.category_name}</div>
             <div className="row-bottom">
@@ -134,9 +140,11 @@ export function Wishlist() {
         <div className="grid">
           {wishlist.map((p) => (
             <div className="p-card" key={p.id} onClick={() => navigate(`/product/${p.id}`)}>
-              <div className="thumb">
+             <div className="thumb">
                 {p.is_deal && <span className="tag">DEAL</span>}
-                {p.icon}
+                {p.image_url
+                  ? <img src={p.image_url} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  : p.icon}
                 <span className="wish active" onClick={(e) => { e.stopPropagation(); toggleWish(p); }}>❤</span>
               </div>
               <div className="body">

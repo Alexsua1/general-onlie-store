@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NavLink, useNavigate, Navigate } from 'react-router-dom';
 import { useAuth, useCart } from './context';
@@ -60,7 +61,9 @@ export function ProductCard({ product, categoryName, wished, onToggleWish, onAdd
     <div className="p-card" onClick={() => navigate(`/product/${product.id}`)}>
       <div className="thumb">
         {product.is_deal && <span className="tag">DEAL</span>}
-        {product.icon}
+        {product.image_url
+          ? <img src={product.image_url} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          : product.icon}
         <span className={`wish ${wished ? 'active' : ''}`}
           onClick={(e) => { e.stopPropagation(); onToggleWish && onToggleWish(product); }}>
           {wished ? '❤' : '♡'}
@@ -115,7 +118,7 @@ export function RequireAuth({ children }) {
 export function RequireAdmin({ children }) {
   const { user, loading, isAdmin } = useAuth();
   if (loading) return <div className="loading-block">Loading…</div>;
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/" replace />;
   if (!isAdmin) return <Navigate to="/" replace />;
   return children;
 }

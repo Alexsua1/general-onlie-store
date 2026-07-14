@@ -9,10 +9,10 @@ router = APIRouter(prefix="/products", tags=["products"])
 
 
 def _serialize(p: models.Product) -> schemas.ProductOut:
-    return schemas.ProductOut(
+   return schemas.ProductOut(
         id=p.id, name=p.name, category_id=p.category_id,
         category_name=p.category.name if p.category else None,
-        icon=p.icon, price=p.price, old_price=p.old_price, stock=p.stock,
+        icon=p.icon, image_url=p.image_url, price=p.price, old_price=p.old_price, stock=p.stock,
         rating=p.rating, reviews_count=p.reviews_count, is_deal=p.is_deal,
         description=p.description or "",
     )
